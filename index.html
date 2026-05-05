@@ -53,6 +53,25 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
+        /* Creator Contribution Block (Now at Top) */
+        .creator-credit {
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+            animation: fadeInUp 0.4s ease forwards;
+        }
+        .creator-credit a {
+            color: var(--accent-blue-hover);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .creator-credit a:hover {
+            color: var(--text-main);
+            text-shadow: 0 0 8px rgba(96, 165, 250, 0.6);
+        }
+
         /* Control Panel UI */
         .controls {
             background: var(--card-bg);
@@ -64,6 +83,8 @@
             max-width: 420px;
             border: 1px solid var(--border-color);
             animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.1s; /* Slightly delayed so header loads first */
+            opacity: 0; /* Starts hidden for animation */
         }
 
         h2 {
@@ -186,7 +207,7 @@
 
         /* A4 Paper Container Preview */
         .a4-wrapper {
-            animation: paperAppear 0.8s ease 0.2s forwards;
+            animation: paperAppear 0.8s ease 0.3s forwards;
             opacity: 0;
             /* Creates a nice glowing backdrop behind the paper */
             position: relative;
@@ -239,7 +260,7 @@
                 background-color: white !important;
                 display: block;
             }
-            .controls, .a4-wrapper::before { display: none !important; }
+            .controls, .a4-wrapper::before, .creator-credit { display: none !important; }
             .a4-wrapper { 
                 animation: none !important; 
                 opacity: 1 !important; 
@@ -258,6 +279,11 @@
     </style>
 </head>
 <body>
+
+    <!-- Creator Contribution Block (Moved to Top) -->
+    <div class="creator-credit">
+        Crafted with ✨ by <a href="#" target="_blank">Tamil amirthan</a>
+    </div>
 
     <div class="controls">
         <h2>A4 Table Generator</h2>
