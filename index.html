@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A4 Table Generator - Dark Edition</title>
+    <title>A4 Table Generator - Ultimate Grid Edition</title>
     <!-- Include html2pdf library for the download feature -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         /* CSS Variables for Dark Theme */
         :root {
-            --bg-color: #0f172a; /* Slate 900 */
-            --card-bg: #1e293b;  /* Slate 800 */
-            --text-main: #f8fafc; /* Slate 50 */
-            --text-muted: #94a3b8; /* Slate 400 */
-            --accent-blue: #3b82f6; /* Blue 500 */
-            --accent-blue-hover: #60a5fa; /* Blue 400 */
-            --accent-green: #10b981; /* Emerald 500 */
-            --accent-green-hover: #34d399; /* Emerald 400 */
-            --border-color: #334155; /* Slate 700 */
+            --bg-color: #0f172a; 
+            --card-bg: #1e293b;  
+            --text-main: #f8fafc; 
+            --text-muted: #94a3b8; 
+            --accent-blue: #3b82f6; 
+            --accent-blue-hover: #60a5fa; 
+            --accent-green: #10b981; 
+            --accent-green-hover: #34d399; 
+            --border-color: #334155; 
             --input-bg: #0f172a;
         }
 
@@ -53,7 +53,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Creator Contribution Block (Now at Top) */
+        /* Creator Contribution Block */
         .creator-credit {
             margin-bottom: 25px;
             font-size: 0.85rem;
@@ -80,11 +80,11 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
             margin-bottom: 40px;
             width: 100%;
-            max-width: 420px;
+            max-width: 480px;
             border: 1px solid var(--border-color);
             animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation-delay: 0.1s; /* Slightly delayed so header loads first */
-            opacity: 0; /* Starts hidden for animation */
+            animation-delay: 0.1s;
+            opacity: 0;
         }
 
         h2 {
@@ -103,6 +103,26 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+        }
+        
+        /* Advanced Gap Settings Wrapper */
+        .gap-settings-wrapper {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .split-section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+            font-weight: 700;
         }
 
         label {
@@ -123,11 +143,76 @@
             font-size: 1rem;
             transition: all 0.3s ease;
             outline: none;
+            box-sizing: border-box;
         }
 
         input:focus, select:focus {
             border-color: var(--accent-blue);
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Specific sizing for pattern inputs */
+        .pattern-input {
+            width: 180px !important;
+            text-align: right;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        /* Toggle Switch Styling */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        .toggle-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--accent-blue-hover);
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border-color);
+            transition: .3s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; width: 18px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--accent-blue); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* Hidden Inner Gap Settings */
+        .gap-inner-settings {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .helper-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            display: block;
+            line-height: 1.4;
+            text-align: right;
         }
 
         /* Button Styling */
@@ -164,7 +249,7 @@
             background: linear-gradient(135deg, var(--accent-blue), #2563eb);
             box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
         }
-        .btn-primary:hover { 
+        .btn-primary:hover:not(:disabled) { 
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
             background: linear-gradient(135deg, var(--accent-blue-hover), #3b82f6);
@@ -174,42 +259,42 @@
             background: linear-gradient(135deg, var(--accent-green), #059669);
             box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
         }
-        .btn-success:hover { 
+        .btn-success:hover:not(:disabled) { 
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
             background: linear-gradient(135deg, var(--accent-green-hover), #10b981);
         }
 
-        .btn-secondary { 
-            background: #475569; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .btn-secondary:hover { 
-            background: #64748b; 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
+        .btn-secondary { background: #475569; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .btn-secondary:hover:not(:disabled) { background: #64748b; transform: translateY(-2px); }
 
-        /* Results Display */
-        .results {
+        /* Error/Results Display */
+        .notice-box {
             margin-top: 25px;
             padding: 15px;
-            background: rgba(59, 130, 246, 0.1);
             border-radius: 8px;
             font-size: 0.9rem;
             line-height: 1.6;
             display: none;
-            border-left: 4px solid var(--accent-blue);
-            color: var(--text-main);
             animation: fadeInUp 0.4s ease forwards;
         }
-        .results strong { color: var(--accent-blue-hover); }
+        .results {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+        }
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            color: #fca5a5;
+        }
 
         /* A4 Paper Container Preview */
         .a4-wrapper {
             animation: paperAppear 0.8s ease 0.3s forwards;
             opacity: 0;
-            /* Creates a nice glowing backdrop behind the paper */
             position: relative;
         }
 
@@ -228,65 +313,48 @@
             color: black;
             box-sizing: border-box;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6); 
-            /* The magic transition that smoothly animates portrait <-> landscape */
             transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
                         height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Table Styling for Preview */
-        table {
+        .preview-table {
             width: 100%;
             height: 100%;
             border-collapse: collapse;
-            /* Fade animation when regenerating the table */
-            animation: fadeInUp 0.4s ease;
+            table-layout: fixed;
         }
-        td {
-            border: 1px solid #333; /* Darker border for better visibility on white */
+        .preview-table td {
+            border: 1px solid #333; 
             box-sizing: border-box;
             text-align: center;
-            transition: background-color 0.2s ease;
-        }
-        td:hover {
-            background-color: rgba(59, 130, 246, 0.1);
         }
 
         /* Print Settings: Strictly standard A4 White output */
         @media print {
-            body {
-                margin: 0;
-                padding: 0;
-                background-color: white !important;
-                display: block;
-            }
+            body { margin: 0; padding: 0; background-color: white !important; display: block; }
             .controls, .a4-wrapper::before, .creator-credit { display: none !important; }
-            .a4-wrapper { 
-                animation: none !important; 
-                opacity: 1 !important; 
-            }
+            .a4-wrapper { animation: none !important; opacity: 1 !important; }
             .a4-container {
-                margin: 0;
-                box-shadow: none !important;
-                position: absolute;
-                top: 0; left: 0;
-                page-break-after: always;
-                transition: none !important; /* Disable animations for print */
+                margin: 0; box-shadow: none !important; position: absolute;
+                top: 0; left: 0; page-break-after: always; transition: none !important;
             }
-            table { animation: none !important; }
             td { border: 1px solid black !important; background-color: white !important; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Creator Contribution Block (Moved to Top) -->
+    <!-- Creator Contribution Block -->
     <div class="creator-credit">
-        Crafted with ✨ by <a href="#" target="_blank">Tamil amirthan</a>
+        Crafted with ✨ by <a href="#" target="_blank">Your Name Here</a>
     </div>
 
     <div class="controls">
-        <h2>A4 Table Generator</h2>
+        <h2>A4 Grid Calculator</h2>
         
         <div class="input-group">
             <label for="orientation">Orientation</label>
@@ -297,24 +365,74 @@
         </div>
         
         <div class="input-group">
-            <label for="rows">Number of Rows</label>
-            <input type="number" id="rows" min="1" value="10">
+            <label for="rows">Total Rows</label>
+            <input type="number" id="rows" min="2" max="100" value="8">
         </div>
         
         <div class="input-group">
-            <label for="cols">Number of Columns</label>
-            <input type="number" id="cols" min="1" value="5">
+            <label for="cols">Total Columns</label>
+            <input type="number" id="cols" min="2" max="50" value="4">
+        </div>
+
+        <!-- ROW Splitting Settings -->
+        <div class="gap-settings-wrapper">
+            <label class="toggle-container">
+                <div class="switch">
+                    <input type="checkbox" id="enableRowGap" onchange="toggleSettings('enableRowGap', 'rowSettings')">
+                    <span class="slider"></span>
+                </div>
+                <span class="toggle-label">Detach Rows (Horizontal Splits)</span>
+            </label>
+            
+            <div class="gap-inner-settings" id="rowSettings">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <label for="rowPattern">Row Pattern</label>
+                        <input type="text" id="rowPattern" class="pattern-input" value="3, 2, 3" placeholder="e.g. 3, 2, 3">
+                    </div>
+                    <span class="helper-text">Must sum to Total Rows.</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="rowGapSize">Row Gap Size (mm)</label>
+                    <input type="number" id="rowGapSize" min="1" value="10" style="width: 80px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUMN Splitting Settings -->
+        <div class="gap-settings-wrapper">
+            <label class="toggle-container">
+                <div class="switch">
+                    <input type="checkbox" id="enableColGap" onchange="toggleSettings('enableColGap', 'colSettings')">
+                    <span class="slider"></span>
+                </div>
+                <span class="toggle-label">Detach Columns (Vertical Splits)</span>
+            </label>
+            
+            <div class="gap-inner-settings" id="colSettings">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <label for="colPattern">Column Pattern</label>
+                        <input type="text" id="colPattern" class="pattern-input" value="2, 2" placeholder="e.g. 2, 2">
+                    </div>
+                    <span class="helper-text">Must sum to Total Columns.</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="colGapSize">Column Gap Size (mm)</label>
+                    <input type="number" id="colGapSize" min="1" value="10" style="width: 80px;">
+                </div>
+            </div>
         </div>
         
         <div class="button-group">
-            <button class="btn-primary" onclick="generateTable()" style="animation: pulseGlow 3s infinite;">
+            <button class="btn-primary" onclick="generateTable()" id="genBtn" style="animation: pulseGlow 3s infinite;">
                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                 Calculate & Generate
             </button>
             <div class="row-buttons" id="action-buttons" style="display: none;">
                 <button class="btn-success" onclick="downloadPDF()">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    Download PDF
+                    PDF
                 </button>
                 <button class="btn-secondary" onclick="window.print()">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
@@ -323,105 +441,249 @@
             </div>
         </div>
 
-        <div class="results" id="results">
-            <strong>Dimensions Generated:</strong><br>
-            <span style="color: var(--text-muted);">Width:</span> <span id="cell-width" style="color: white; font-weight: bold;"></span> mm<br>
-            <span style="color: var(--text-muted);">Height:</span> <span id="cell-height" style="color: white; font-weight: bold;"></span> mm<br>
-            <span style="color: var(--text-muted);">Paper Size:</span> <em id="paper-size-display" style="color: var(--accent-green);"></em>
+        <div class="notice-box error" id="errorBox"></div>
+
+        <div class="notice-box results" id="resultsBox">
+            <div>
+                <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Cell Size</span><br>
+                <strong id="cell-width"></strong> x <strong id="cell-height"></strong> mm
+            </div>
+            <div style="text-align: right;">
+                <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Paper Grid</span><br>
+                <em id="paper-size-display" style="color: var(--accent-green);"></em>
+            </div>
         </div>
     </div>
 
-    <!-- The actual A4 page representation wrapped for glow effects -->
+    <!-- Screen Preview -->
     <div class="a4-wrapper">
         <div class="a4-container" id="a4-preview"></div>
     </div>
+    
+    <!-- Hidden Exact PDF Render Target -->
+    <div id="pdfTargetWrapper" style="display:none;" aria-hidden="true"></div>
 
     <script>
-        function generateTable() {
-            const rows = parseInt(document.getElementById('rows').value);
-            const cols = parseInt(document.getElementById('cols').value);
-            const orientation = document.getElementById('orientation').value;
+        function toggleSettings(checkboxId, settingsId) {
+            const isEnabled = document.getElementById(checkboxId).checked;
+            const innerSettings = document.getElementById(settingsId);
+            innerSettings.style.display = isEnabled ? 'flex' : 'none';
+            if(isEnabled) innerSettings.style.animation = 'fadeInUp 0.3s ease forwards';
+            generateTable(); // Auto-regenerate on toggle
+        }
 
-            if (isNaN(rows) || isNaN(cols) || rows < 1 || cols < 1) {
-                alert("Please enter valid positive numbers for both rows and columns.");
-                return;
+        function parsePattern(patternStr, totalExpected) {
+            const groups = patternStr.split(/[, ]+/).map(n => parseInt(n)).filter(n => !isNaN(n));
+            if (groups.length === 0) return { valid: false, groups: [] };
+            const sum = groups.reduce((a, b) => a + b, 0);
+            return { valid: sum === totalExpected, groups, sum };
+        }
+
+        function buildHTML(rowGroups, colGroups, rowGapMM, colGapMM, cellHeightMM, cellWidthMM, totalHeightMM, totalWidthMM, isExactRender) {
+            let finalHtml = '';
+
+            for (let i = 0; i < rowGroups.length; i++) {
+                const rCount = rowGroups[i];
+                const rowWrapperHeight = isExactRender ? `${rCount * cellHeightMM}mm` : `${(rCount * cellHeightMM / totalHeightMM) * 100}%`;
+                
+                // Create a flex-row wrapper for this specific horizontal band of tables
+                finalHtml += `<div style="display: flex; flex-direction: row; width: 100%; height: ${rowWrapperHeight};">`;
+                
+                for (let j = 0; j < colGroups.length; j++) {
+                    const cCount = colGroups[j];
+                    const colWrapperWidth = isExactRender ? `${cCount * cellWidthMM}mm` : `${(cCount * cellWidthMM / totalWidthMM) * 100}%`;
+                    
+                    const tableStyle = isExactRender 
+                        ? 'width:100%; height:100%; border-collapse:collapse; table-layout:fixed; margin:0; padding:0;' 
+                        : 'width:100%; height:100%; border-collapse:collapse; table-layout:fixed;';
+                    
+                    // Build the actual table chunk
+                    let tableHtml = `<table class="preview-table" style="${tableStyle}"><tbody>`;
+                    for(let r = 0; r < rCount; r++){
+                        tableHtml += '<tr>';
+                        for(let c = 0; c < cCount; c++){
+                            if (isExactRender) {
+                                tableHtml += `<td style="width:${cellWidthMM}mm; height:${cellHeightMM}mm; border:1px solid black; box-sizing:border-box;"></td>`;
+                            } else {
+                                tableHtml += `<td></td>`;
+                            }
+                        }
+                        tableHtml += '</tr>';
+                    }
+                    tableHtml += '</tbody></table>';
+
+                    // Wrap the table chunk in its designated width container
+                    finalHtml += `<div style="width: ${colWrapperWidth}; height: 100%;">${tableHtml}</div>`;
+
+                    // Add Column Gap if not the last column chunk
+                    if (j < colGroups.length - 1) {
+                        const cGapStr = isExactRender ? `${colGapMM}mm` : `${(colGapMM / totalWidthMM) * 100}%`;
+                        finalHtml += `<div style="width: ${cGapStr}; height: 100%;"></div>`;
+                    }
+                }
+                
+                finalHtml += `</div>`; // Close row wrapper
+
+                // Add Row Gap if not the last row chunk
+                if (i < rowGroups.length - 1) {
+                    const rGapStr = isExactRender ? `${rowGapMM}mm` : `${(rowGapMM / totalHeightMM) * 100}%`;
+                    finalHtml += `<div style="width: 100%; height: ${rGapStr};"></div>`;
+                }
             }
 
-            // Determine dimensions based on orientation
+            return finalHtml;
+        }
+
+        function generateTable() {
+            document.getElementById('errorBox').style.display = 'none';
+            document.getElementById('resultsBox').style.display = 'none';
+            
+            const totalRows = parseInt(document.getElementById('rows').value);
+            const totalCols = parseInt(document.getElementById('cols').value);
+            const orientation = document.getElementById('orientation').value;
+            
+            const enableRowGap = document.getElementById('enableRowGap').checked;
+            const enableColGap = document.getElementById('enableColGap').checked;
+
+            if (isNaN(totalRows) || isNaN(totalCols) || totalRows < 1 || totalCols < 1) {
+                showError("Please enter valid positive numbers for total rows and columns."); return;
+            }
+
             const A4_WIDTH_MM = orientation === 'portrait' ? 210 : 297;
             const A4_HEIGHT_MM = orientation === 'portrait' ? 297 : 210;
-
-            // Calculate exact sizes
-            const cellWidth = (A4_WIDTH_MM / cols).toFixed(2);
-            const cellHeight = (A4_HEIGHT_MM / rows).toFixed(2);
-
-            // Update UI
-            document.getElementById('cell-width').innerText = cellWidth;
-            document.getElementById('cell-height').innerText = cellHeight;
-            document.getElementById('paper-size-display').innerText = `${A4_WIDTH_MM}mm x ${A4_HEIGHT_MM}mm (${orientation})`;
-            document.getElementById('results').style.display = 'block';
             
-            // Fade in action buttons gracefully
+            let rowGroups = [totalRows];
+            let colGroups = [totalCols];
+            let rowGapMM = 0, colGapMM = 0;
+            let totalRowGapMM = 0, totalColGapMM = 0;
+
+            // Row Pattern Validation
+            if (enableRowGap) {
+                rowGapMM = parseFloat(document.getElementById('rowGapSize').value);
+                const patternStr = document.getElementById('rowPattern').value;
+                const parsed = parsePattern(patternStr, totalRows);
+                
+                if (!parsed.valid) {
+                    if(parsed.groups.length === 0) showError("Please enter a valid Row Pattern.");
+                    else showError(`Row pattern sums to <b>${parsed.sum}</b>, but Total Rows is <b>${totalRows}</b>.`);
+                    return;
+                }
+                if (isNaN(rowGapMM) || rowGapMM <= 0) { showError("Row gap size must be greater than 0."); return; }
+                
+                rowGroups = parsed.groups;
+                totalRowGapMM = (rowGroups.length - 1) * rowGapMM;
+            }
+
+            // Col Pattern Validation
+            if (enableColGap) {
+                colGapMM = parseFloat(document.getElementById('colGapSize').value);
+                const patternStr = document.getElementById('colPattern').value;
+                const parsed = parsePattern(patternStr, totalCols);
+                
+                if (!parsed.valid) {
+                    if(parsed.groups.length === 0) showError("Please enter a valid Column Pattern.");
+                    else showError(`Column pattern sums to <b>${parsed.sum}</b>, but Total Cols is <b>${totalCols}</b>.`);
+                    return;
+                }
+                if (isNaN(colGapMM) || colGapMM <= 0) { showError("Column gap size must be greater than 0."); return; }
+                
+                colGroups = parsed.groups;
+                totalColGapMM = (colGroups.length - 1) * colGapMM;
+            }
+
+            // Paper overflow checks
+            if (totalRowGapMM >= A4_HEIGHT_MM - 20) { showError("Total vertical gap size is too large for the paper."); return; }
+            if (totalColGapMM >= A4_WIDTH_MM - 20) { showError("Total horizontal gap size is too large for the paper."); return; }
+
+            // The Core Math Engine
+            const availableHeightMM = A4_HEIGHT_MM - totalRowGapMM;
+            const availableWidthMM = A4_WIDTH_MM - totalColGapMM;
+            
+            const cellHeightMM = (availableHeightMM / totalRows).toFixed(2);
+            const cellWidthMM = (availableWidthMM / totalCols).toFixed(2);
+
+            // Update UI Details
+            document.getElementById('cell-width').innerText = cellWidthMM;
+            document.getElementById('cell-height').innerText = cellHeightMM;
+            document.getElementById('paper-size-display').innerText = `${A4_WIDTH_MM}x${A4_HEIGHT_MM}`;
+            document.getElementById('resultsBox').style.display = 'flex';
+            
             const actionBtns = document.getElementById('action-buttons');
             actionBtns.style.display = 'flex';
             actionBtns.style.animation = 'fadeInUp 0.4s ease forwards';
 
-            // Update Preview Container Size - Triggers CSS Transition Animation
+            // 1. Update Screen Preview
             const preview = document.getElementById('a4-preview');
             preview.style.width = `${A4_WIDTH_MM}mm`;
             preview.style.height = `${A4_HEIGHT_MM}mm`;
-
-            // Update Print Styles dynamically
-            updatePrintStyles(orientation);
-
-            // Generate Table HTML
-            // Re-triggering the table animation by re-inserting the element
-            let tableHTML = '<table>';
-            for (let i = 0; i < rows; i++) {
-                tableHTML += '<tr>';
-                for (let j = 0; j < cols; j++) {
-                    tableHTML += `<td style="width: ${cellWidth}mm; height: ${cellHeight}mm;"></td>`;
-                }
-                tableHTML += '</tr>';
-            }
-            tableHTML += '</table>';
-
-            // Brief timeout forces the browser to restart the table fade-in animation
-            preview.innerHTML = '';
+            preview.innerHTML = ''; 
             setTimeout(() => {
-                preview.innerHTML = tableHTML;
+                // Pass false for isExactRender to use % scaling on screen
+                preview.innerHTML = buildHTML(rowGroups, colGroups, rowGapMM, colGapMM, cellHeightMM, cellWidthMM, A4_HEIGHT_MM, A4_WIDTH_MM, false);
             }, 10);
+
+            // 2. Generate PDF Exact Target
+            const pdfTarget = document.getElementById('pdfTargetWrapper');
+            pdfTarget.innerHTML = `
+                <div id="pdfExactContainer" style="width:${A4_WIDTH_MM}mm; height:${A4_HEIGHT_MM}mm; background:white; margin:0; padding:0; box-sizing:border-box; display:flex; flex-direction:column;">
+                    ${buildHTML(rowGroups, colGroups, rowGapMM, colGapMM, cellHeightMM, cellWidthMM, A4_HEIGHT_MM, A4_WIDTH_MM, true)}
+                </div>
+            `;
+
+            updatePrintStyles(orientation, A4_WIDTH_MM, A4_HEIGHT_MM);
         }
 
-        // Dynamically forces the browser print dialog to switch between portrait/landscape
-        function updatePrintStyles(orientation) {
+        function showError(msg) {
+            const err = document.getElementById('errorBox');
+            err.innerHTML = `<strong>Error:</strong> ${msg}`;
+            err.style.display = 'block';
+            document.getElementById('action-buttons').style.display = 'none';
+        }
+
+        function updatePrintStyles(orientation, widthMM, heightMM) {
             let style = document.getElementById('dynamic-print-style');
             if (!style) {
                 style = document.createElement('style');
                 style.id = 'dynamic-print-style';
                 document.head.appendChild(style);
             }
-            style.innerHTML = `@media print { @page { size: A4 ${orientation}; margin: 0; } }`;
+            style.innerHTML = `
+                @media print { 
+                    @page { size: A4 ${orientation}; margin: 0; } 
+                    #a4-preview { width: ${widthMM}mm !important; height: ${heightMM}mm !important; }
+                }
+            `;
         }
 
         function downloadPDF() {
-            const element = document.getElementById('a4-preview');
+            const element = document.getElementById('pdfExactContainer');
             const orientation = document.getElementById('orientation').value;
+            const rows = document.getElementById('rows').value;
+            const cols = document.getElementById('cols').value;
             
-            // Configure PDF options, dynamically setting portrait/landscape
+            const isRowSplit = document.getElementById('enableRowGap').checked ? 'R' : '';
+            const isColSplit = document.getElementById('enableColGap').checked ? 'C' : '';
+            const splitTag = (isRowSplit || isColSplit) ? `_Split${isRowSplit}${isColSplit}` : '';
+
+            const wrapper = document.getElementById('pdfTargetWrapper');
+            wrapper.style.display = 'block';
+            wrapper.style.position = 'absolute';
+            wrapper.style.left = '-9999px';
+
             const opt = {
                 margin:       0,
-                filename:     `Custom_Table_${orientation}.pdf`,
+                filename:     `A4_Grid_${rows}x${cols}${splitTag}_${orientation}.pdf`,
                 image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 2 },
+                html2canvas:  { scale: 2, useCORS: true },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: orientation }
             };
 
-            // Generate and download
-            html2pdf().set(opt).from(element).save();
+            html2pdf().set(opt).from(element).save().then(() => {
+                wrapper.style.display = 'none';
+                wrapper.style.position = 'static';
+            });
         }
 
-        // Generate default table on load
         window.onload = generateTable;
     </script>
 
